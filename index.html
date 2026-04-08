@@ -828,7 +828,6 @@
                 <div class="hero-copy">
                     <p class="hero-kicker">🌲 Las Narnii i stara latarnia</p>
                     <h1>Opowieści z Narnii</h1>
-                    <p class="lead">Teraz ekran startowy bardziej przypomina słynną scenę z lektury: ośnieżony las, ciepłe światło latarni i baśniowy klimat pierwszych kroków Łucji w Narnii.</p>
 
                     <div class="input-group">
                         <label for="player-name">Imię gracza</label>
@@ -840,6 +839,11 @@
                         <button id="ranking-btn" class="secondary-btn" type="button">Zobacz ranking</button>
                     </div>
 
+                    <div class="button-row">
+                        <button id="host-btn" class="secondary-btn" type="button">🎮 Wygeneruj kod rundy</button>
+                        <button id="join-btn" class="secondary-btn" type="button">🔗 Dołącz do rundy</button>
+                    </div>
+
                     <div class="quick-info">
                         <div class="info-pill"><strong>30</strong><span>pytań</span></div>
                         <div class="info-pill"><strong>20 s</strong><span>na odpowiedź</span></div>
@@ -847,7 +851,6 @@
                     </div>
 
                     <div class="note">
-                        <span>💡 Wyniki zapisują się też lokalnie, więc ranking działa nawet bez serwera.</span>
                         <button id="random-name-btn" class="text-btn" type="button">Losowe imię</button>
                     </div>
                 </div>
@@ -931,6 +934,72 @@
                 </table>
             </div>
         </section>
+
+        <!-- Ekran tworzenia rundy multiplayer -->
+        <section id="screen-host" class="panel hidden">
+            <div class="section-header">
+                <div>
+                    <p class="hero-kicker">🎮 Stwórz rundę multiplayer</p>
+                    <h2>Kod rundy</h2>
+                </div>
+                <button id="host-back-btn" class="ghost-btn" type="button">Powrót</button>
+            </div>
+
+            <div style="text-align: center; padding: 40px 20px; max-width: 500px; margin: 0 auto;">
+                <div class="input-group">
+                    <label for="host-player-name">Twoje imię</label>
+                    <input type="text" id="host-player-name" maxlength="20" placeholder="Np. Łucja" autocomplete="name">
+                </div>
+
+                <button id="generate-code-btn" class="primary-btn" type="button" style="width: 100%; margin-bottom: 30px;">Wygeneruj kod</button>
+
+                <div id="host-code-section" style="display: none;">
+                    <p style="margin-bottom: 20px; font-size: 0.95rem; color: var(--muted);">Podziel się tym kodem z przyjaciółmi:</p>
+                    <div style="background: rgba(255, 215, 106, 0.15); border: 2px solid var(--gold); border-radius: 16px; padding: 30px; margin-bottom: 30px;">
+                        <div id="host-code" style="font-size: 3em; font-weight: 700; color: var(--gold); letter-spacing: 8px; font-family: monospace;">-</div>
+                        <button id="copy-code-btn" class="secondary-btn" type="button" style="margin-top: 20px;">📋 Skopiuj kod</button>
+                    </div>
+
+                    <div style="background: rgba(87, 209, 141, 0.1); border: 1px solid var(--success); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <p style="margin: 0 0 15px; font-weight: 600; color: var(--success);">👥 Dołączeni gracze:</p>
+                        <ul id="host-players-list" style="list-style: none; padding: 0; margin: 0; text-align: left;">
+                            <li style="padding: 8px; color: var(--muted);">Jeszcze nikt się nie dołączył...</li>
+                        </ul>
+                    </div>
+
+                    <button id="start-multiplayer-btn" class="primary-btn" type="button" style="width: 100%;">Rozpocznij grę</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ekran dołączania do rundy multiplayer -->
+        <section id="screen-join" class="panel hidden">
+            <div class="section-header">
+                <div>
+                    <p class="hero-kicker">🔗 Dołącz do rundy</p>
+                    <h2>Wprowadź kod</h2>
+                </div>
+                <button id="join-back-btn" class="ghost-btn" type="button">Powrót</button>
+            </div>
+
+            <div style="padding: 30px 20px; max-width: 400px; margin: 0 auto;">
+                <div class="input-group">
+                    <label for="join-code">Kod rundy</label>
+                    <input type="text" id="join-code" maxlength="6" placeholder="Np. ABC123" autocomplete="off" style="text-transform: uppercase; letter-spacing: 2px; font-size: 1.1em; font-weight: 600;">
+                </div>
+
+                <div class="input-group">
+                    <label for="join-player-name">Twoje imię</label>
+                    <input type="text" id="join-player-name" maxlength="20" placeholder="Np. Łucja" autocomplete="name">
+                </div>
+
+                <button id="join-submit-btn" class="primary-btn" type="button" style="width: 100%; margin-bottom: 15px;">Dołącz do rundy</button>
+
+                <div id="join-status" style="text-align: center; color: var(--muted); font-size: 0.9rem;">
+                    <p>Czekanie na początek gry...</p>
+                </div>
+            </div>
+        </section>
     </main>
 
     <script>
@@ -975,7 +1044,9 @@
             start: document.getElementById('screen-start'),
             quiz: document.getElementById('screen-quiz'),
             result: document.getElementById('screen-result'),
-            leaderboard: document.getElementById('screen-leaderboard')
+            leaderboard: document.getElementById('screen-leaderboard'),
+            host: document.getElementById('screen-host'),
+            join: document.getElementById('screen-join')
         };
 
         const elements = {
@@ -1000,16 +1071,40 @@
             nextBtn: document.getElementById('next-btn'),
             playAgainBtn: document.getElementById('play-again-btn'),
             resultRankingBtn: document.getElementById('result-ranking-btn'),
-            backHomeBtn: document.getElementById('back-home-btn')
+            backHomeBtn: document.getElementById('back-home-btn'),
+            hostBtn: document.getElementById('host-btn'),
+            joinBtn: document.getElementById('join-btn'),
+            hostCode: document.getElementById('host-code'),
+            copyCodeBtn: document.getElementById('copy-code-btn'),
+            hostPlayersList: document.getElementById('host-players-list'),
+            startMultiplayerBtn: document.getElementById('start-multiplayer-btn'),
+            hostBackBtn: document.getElementById('host-back-btn'),
+            hostPlayerName: document.getElementById('host-player-name'),
+            generateCodeBtn: document.getElementById('generate-code-btn'),
+            hostCodeSection: document.getElementById('host-code-section'),
+            joinCode: document.getElementById('join-code'),
+            joinPlayerName: document.getElementById('join-player-name'),
+            joinSubmitBtn: document.getElementById('join-submit-btn'),
+            joinStatus: document.getElementById('join-status'),
+            joinBackBtn: document.getElementById('join-back-btn')
         };
 
         let quizQuestions = [];
         let currentIdx = 0;
-        let score = 0;
+        let correctAnswers = 0;
+        let timeBonusScore = 0;
         let playerName = '';
         let answered = false;
         let timerId = null;
         let timeLeft = QUESTION_TIME;
+        let roundStartTime = 0;
+
+        // 🎮 Multiplayer variables
+        let isMultiplayer = false;
+        let isHost = false;
+        let currentSessionCode = '';
+        let multiplayerPlayers = [];
+        let sessionCheckInterval = null;
 
         function showScreen(screenName) {
             Object.values(screens).forEach(screen => screen.classList.add('hidden'));
@@ -1042,8 +1137,17 @@
 
             playerName = rawName.slice(0, 20);
             currentIdx = 0;
-            score = 0;
+            correctAnswers = 0;
+            timeBonusScore = 0;
             answered = false;
+            roundStartTime = Date.now();
+            
+            // 🗑️ Czyszczenie rankingu na start nowej rundy (jak w Kahocie)
+            try {
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem(BEST_SCORE_KEY);
+            } catch {}
+            
             quizQuestions = shuffle(questionBank);
             elements.questionTotal.textContent = String(quizQuestions.length);
             showScreen('quiz');
@@ -1103,6 +1207,7 @@
 
             const currentQuestion = quizQuestions[currentIdx];
             const buttons = Array.from(elements.optionsContainer.children);
+            const timeUsed = QUESTION_TIME - timeLeft; // Ile czasu zajęła odpowiedź
 
             buttons.forEach((button, index) => {
                 button.disabled = true;
@@ -1113,14 +1218,21 @@
             });
 
             if (selectedIndex === currentQuestion.c) {
-                score += 1;
-                elements.feedback.innerHTML = `✅ Świetnie! ${currentQuestion.fact}`;
+                // ⚡ Obliczanie bonusowych punktów za szybkość
+                correctAnswers += 1;
+                const timeBonus = Math.round((timeLeft / QUESTION_TIME) * 1000); // Max 1000 pkt za 0 sekund
+                const bonusText = timeLeft >= 18 ? '🔥 +1000 MEGA BONUS!' : timeLeft >= 15 ? '⚡ +' + timeBonus + ' bonus!' : '+' + timeBonus + ' pkt';
+                
+                timeBonusScore += timeBonus;
+                elements.feedback.innerHTML = `✅ Świetnie! ${bonusText}<br><small>${currentQuestion.fact}</small>`;
                 elements.feedback.className = 'feedback success';
             } else if (isTimeout) {
-                elements.feedback.innerHTML = `⏳ Czas minął. Poprawna odpowiedź: <strong>${currentQuestion.a[currentQuestion.c]}</strong>. ${currentQuestion.fact}`;
+                // Timeout = 0 punktów
+                elements.feedback.innerHTML = `⏳ Czas minął. Poprawna odpowiedź: <strong>${currentQuestion.a[currentQuestion.c]}</strong>. <small>${currentQuestion.fact}</small>`;
                 elements.feedback.className = 'feedback warning';
             } else {
-                elements.feedback.innerHTML = `❌ Poprawna odpowiedź: <strong>${currentQuestion.a[currentQuestion.c]}</strong>. ${currentQuestion.fact}`;
+                // Zła odpowiedź = 0 punktów
+                elements.feedback.innerHTML = `❌ Poprawna odpowiedź: <strong>${currentQuestion.a[currentQuestion.c]}</strong>. <small>${currentQuestion.fact}</small>`;
                 elements.feedback.className = 'feedback error';
             }
 
@@ -1165,12 +1277,16 @@
 
         function normalizeEntry(entry) {
             const total = Math.max(1, Number(entry.total) || questionBank.length);
-            const scoreValue = Math.max(0, Number(entry.score) || 0);
-            const percentage = Math.round((scoreValue / total) * 100);
+            const correctAnswers = Math.max(0, Number(entry.correctAnswers) || 0);
+            const timeBonusScore = Math.max(0, Number(entry.timeBonusScore) || 0);
+            const totalScore = Math.max(0, Number(entry.totalScore) || (correctAnswers + timeBonusScore));
+            const percentage = entry.percentage !== undefined ? entry.percentage : Math.round((correctAnswers / total) * 100);
 
             return {
                 name: String(entry.name || 'Nieznany gracz').trim().slice(0, 20) || 'Nieznany gracz',
-                score: scoreValue,
+                correctAnswers,
+                timeBonusScore,
+                totalScore,
                 total,
                 percentage,
                 rank: entry.rank || getRank(percentage),
@@ -1191,7 +1307,7 @@
         function saveLocalLeaderboard(entry) {
             const entries = readLocalLeaderboard();
             entries.push(normalizeEntry(entry));
-            entries.sort((a, b) => b.score - a.score || a.date.localeCompare(b.date));
+            entries.sort((a, b) => b.totalScore - a.totalScore || a.date.localeCompare(b.date));
 
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(entries.slice(0, 12)));
@@ -1211,7 +1327,7 @@
 
         function updateBestScore(entry) {
             const currentBest = readBestScore();
-            if (!currentBest || entry.score > currentBest.score || (entry.score === currentBest.score && entry.percentage > currentBest.percentage)) {
+            if (!currentBest || entry.totalScore > currentBest.totalScore || (entry.totalScore === currentBest.totalScore && entry.percentage > currentBest.percentage)) {
                 try {
                     localStorage.setItem(BEST_SCORE_KEY, JSON.stringify(entry));
                 } catch {
@@ -1223,7 +1339,7 @@
 
         function renderBestScore() {
             const best = readBestScore();
-            elements.bestScore.textContent = best ? `${best.score}/${best.total}` : 'Brak';
+            elements.bestScore.textContent = best ? `${best.correctAnswers}✓+${best.timeBonusScore}⚡` : 'Brak';
         }
 
         function escapeHtml(value) {
@@ -1278,7 +1394,7 @@
                     <tr>
                         <td>${place}</td>
                         <td><strong>${escapeHtml(entry.name)}</strong></td>
-                        <td>${entry.score}/${entry.total}<br><small>${entry.percentage}%</small></td>
+                        <td><strong>${entry.correctAnswers} ✓ + ${entry.timeBonusScore} ⚡</strong><br><small>${entry.totalScore} pkt | ${entry.percentage}%</small></td>
                         <td><span class="table-badge">${escapeHtml(entry.rank)}</span></td>
                     </tr>
                 `;
@@ -1289,7 +1405,9 @@
             try {
                 const payload = new URLSearchParams({
                     name: entry.name,
-                    score: String(entry.score),
+                    score: String(entry.totalScore),
+                    correctAnswers: String(entry.correctAnswers),
+                    timeBonus: String(entry.timeBonusScore),
                     total: String(entry.total),
                     rank: entry.rank
                 });
@@ -1307,18 +1425,20 @@
         function finishQuiz() {
             clearInterval(timerId);
             const total = quizQuestions.length;
-            const percentage = Math.round((score / total) * 100);
+            const roundTime = Math.round((Date.now() - roundStartTime) / 1000);
+            const totalScore = correctAnswers + timeBonusScore;
+            const percentage = Math.round((correctAnswers / total) * 100);
             const rank = getRank(percentage);
-            const entry = normalizeEntry({ name: playerName, score, total, rank });
+            const entry = normalizeEntry({ name: playerName, correctAnswers, timeBonusScore, totalScore, total, rank, percentage });
 
             saveLocalLeaderboard(entry);
             updateBestScore(entry);
             syncScore(entry);
 
             elements.resultTitle.textContent = `Brawo, ${playerName}!`;
-            elements.resultScore.textContent = `${score}/${total}`;
+            elements.resultScore.textContent = `${totalScore} punktów (${correctAnswers} ✓ + ${timeBonusScore} ⚡)`;
             elements.resultBadge.textContent = rank;
-            elements.resultMessage.textContent = `${getResultMessage(percentage)} Skuteczność: ${percentage}%.`;
+            elements.resultMessage.textContent = `${getResultMessage(percentage)} Czas rundy: ${roundTime}s | Dokładność: ${percentage}%.`;
 
             showScreen('result');
         }
@@ -1344,7 +1464,171 @@
 
         function goHome() {
             clearInterval(timerId);
+            clearInterval(sessionCheckInterval);
+            isMultiplayer = false;
+            isHost = false;
+            multiplayerPlayers = [];
+            currentSessionCode = '';
             showScreen('start');
+        }
+
+        // 🎮 Multiplayer functions
+
+        function generateRoomCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = '';
+            for (let i = 0; i < 6; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        function startHosting() {
+            elements.hostPlayerName.value = '';
+            elements.hostCodeSection.style.display = 'none';
+            showScreen('host');
+        }
+
+        function generateHostCode() {
+            const hostName = elements.hostPlayerName.value.trim();
+            if (!hostName) {
+                alert('Podaj swoje imię!');
+                elements.hostPlayerName.focus();
+                return;
+            }
+
+            currentSessionCode = generateRoomCode();
+            isHost = true;
+            isMultiplayer = true;
+            multiplayerPlayers = [{ name: hostName, isHost: true }];
+            
+            elements.hostCode.textContent = currentSessionCode;
+            renderHostPlayersList();
+            
+            // Przechowaj sesję w localStorage
+            try {
+                localStorage.setItem(`narnia_session_${currentSessionCode}`, JSON.stringify({
+                    code: currentSessionCode,
+                    host: 'true',
+                    players: multiplayerPlayers,
+                    gameStarted: 'false'
+                }));
+            } catch {}
+            
+            // Pokaż kod i listę graczy
+            elements.hostCodeSection.style.display = 'block';
+        }
+
+        function startJoining() {
+            elements.joinCode.value = '';
+            elements.joinPlayerName.value = '';
+            showScreen('join');
+        }
+
+        function copyRoomCodeToClipboard() {
+            const code = elements.hostCode.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('✅ Kod skopiowany do schowka: ' + code);
+            }).catch(err => {
+                console.error('Błąd kopiowania:', err);
+                alert('Nie udało się skopiować kodu');
+            });
+        }
+
+        function renderHostPlayersList() {
+            if (multiplayerPlayers.length === 0) {
+                elements.hostPlayersList.innerHTML = '<li style="padding: 8px; color: var(--muted);">Jeszcze nikt się nie dołączył...</li>';
+                return;
+            }
+            
+            elements.hostPlayersList.innerHTML = multiplayerPlayers.map(p => 
+                `<li style="padding: 8px; color: ${p.isHost ? 'var(--success)' : 'var(--text)'};">
+                    ${p.name} ${p.isHost ? '👑' : ''}
+                </li>`
+            ).join('');
+        }
+
+        function submitJoinCode() {
+            const code = elements.joinCode.value.toUpperCase().trim();
+            const name = elements.joinPlayerName.value.trim();
+            
+            if (!code || code.length !== 6) {
+                alert('Kod musi mieć 6 znaków!');
+                return;
+            }
+            if (!name) {
+                alert('Podaj swoje imię!');
+                return;
+            }
+            
+            // Sprawdź czy kod istnieje w localStorage
+            try {
+                const sessionData = localStorage.getItem(`narnia_session_${code}`);
+                if (!sessionData) {
+                    alert('❌ Kod nie znaleziony! Sprawdź czy kod jest poprawny.');
+                    return;
+                }
+                
+                const session = JSON.parse(sessionData);
+                if (session.gameStarted === 'true') {
+                    alert('⚠️ Ta runda już się rozpoczęła!');
+                    return;
+                }
+                
+                // Dołącz do sesji
+                currentSessionCode = code;
+                playerName = name;
+                isMultiplayer = true;
+                isHost = false;
+                
+                // Dodaj do listy graczy
+                session.players.push({ name: playerName, isHost: false });
+                localStorage.setItem(`narnia_session_${code}`, JSON.stringify(session));
+                
+                // Przejdź do ekranu czekania
+                elements.joinStatus.innerHTML = '<p style="color: var(--success);">✅ Dołączyłeś pomyślnie!<br>Czekaj na start od gospodarza...</p>';
+                
+                // Co 1 sekundę sprawdzaj czy gra się zaczęła
+                sessionCheckInterval = setInterval(() => {
+                    const updatedSession = localStorage.getItem(`narnia_session_${code}`);
+                    if (updatedSession) {
+                        const data = JSON.parse(updatedSession);
+                        if (data.gameStarted === 'true') {
+                            clearInterval(sessionCheckInterval);
+                            // Przenieś imię gracza do głównego pola imienia
+                            elements.nameInput.value = playerName;
+                            initQuiz();
+                        }
+                    }
+                }, 1000);
+                
+            } catch (err) {
+                console.error('Błąd:', err);
+                alert('❌ Coś poszło nie tak. Sprawdź kod i spróbuj ponownie.');
+            }
+        }
+
+        function startMultiplayerGame() {
+            if (!isHost || !currentSessionCode) {
+                alert('Najpierw wygeneruj kod rundy!');
+                return;
+            }
+            
+            try {
+                const sessionData = JSON.parse(localStorage.getItem(`narnia_session_${currentSessionCode}`) || '{}');
+                sessionData.gameStarted = 'true';
+                sessionData.startedAt = Date.now();
+                localStorage.setItem(`narnia_session_${currentSessionCode}`, JSON.stringify(sessionData));
+                
+                // Przenieś imię gospodarza do głównego pola imienia
+                elements.nameInput.value = elements.hostPlayerName.value;
+                
+                // Zostań gospodarzem i zacznij grę
+                playerName = elements.hostPlayerName.value || 'Gospodarz';
+                initQuiz();
+            } catch (err) {
+                alert('Błąd podczas startu gry!');
+            }
         }
 
         const canvas = document.getElementById('snow');
@@ -1400,6 +1684,23 @@
         elements.playAgainBtn.addEventListener('click', initQuiz);
         elements.resultRankingBtn.addEventListener('click', loadLeaderboard);
         elements.backHomeBtn.addEventListener('click', goHome);
+
+        // 🎮 Multiplayer event listeners
+        elements.hostBtn.addEventListener('click', startHosting);
+        elements.generateCodeBtn.addEventListener('click', generateHostCode);
+        elements.hostPlayerName.addEventListener('keydown', event => {
+            if (event.key === 'Enter') generateHostCode();
+        });
+        elements.joinBtn.addEventListener('click', startJoining);
+        elements.hostBackBtn.addEventListener('click', goHome);
+        elements.joinBackBtn.addEventListener('click', goHome);
+        elements.copyCodeBtn.addEventListener('click', copyRoomCodeToClipboard);
+        elements.startMultiplayerBtn.addEventListener('click', startMultiplayerGame);
+        elements.joinSubmitBtn.addEventListener('click', submitJoinCode);
+        elements.joinCode.addEventListener('keydown', event => {
+            if (event.key === 'Enter') submitJoinCode();
+        });
+
         elements.nameInput.addEventListener('keydown', event => {
             if (event.key === 'Enter') initQuiz();
         });
