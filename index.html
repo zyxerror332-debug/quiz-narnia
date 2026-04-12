@@ -1180,40 +1180,39 @@
 
     <script>
         const STORAGE_KEY = 'narniaQuizLeaderboardV2';
-        const BEST_SCORE_KEY = 'narniaQuizBestScoreV2';
         const QUESTION_TIME = 20;
 
         const questionBank = [
     { q: 'Dlaczego rodzeństwo Pevensie opuściło Londyn?', a: ['Z powodu wakacji', 'Przez naloty bombowe', 'Z powodu nowej szkoły', 'Na prośbę Profesora'], c: 1, fact: 'Dzieci ewakuowano na wieś z powodu II wojny światowej.' },
     { q: 'Kto jako pierwszy odkrył przejście do Narnii w szafie?', a: ['Piotr', 'Zuzanna', 'Edmund', 'Łucja'], c: 3, fact: 'To najmłodsza Łucja pierwsza trafiła do magicznego świata.' },
     { q: 'Jaką postać Łucja spotkała przy latarni jako pierwszą?', a: ['Aslana', 'Białą Czarownicę', 'Pana Tumnusa', 'Pana Bobra'], c: 2, fact: 'Pierwszym mieszkańcem Narnii, jakiego poznała Łucja, był faun Tumnus.' },
-    { q: 'Co Pan Tumnus wyznał Łucji podczas płaczu?', a: ['Że zgubił klucze', 'Że jest szpiegiem Czarownicy', 'Że chce uciec z Narnii', 'Że jest głodny'], c: 1, fact: 'Tumnus był szpiegiem z przymusu, który miał wydawać ludzi Czarownicy.' },
-    { q: 'Jak nazywał się dom, w którym mieszkał Profesor?', a: ['Dom pod Orłami', 'Stary Dwór', 'Wielki Dom na wsi', 'Zamek Ker-Paravel'], c: 2, fact: 'Akcja w naszym świecie toczy się w ogromnym domu pełnym zakamarków.' },
-    { q: 'Dlaczego Edmund wszedł do szafy za drugim razem?', a: ['Chciał zwiedzić Narnię', 'Chciał dokuczać Łucji', 'Szukał ciepłego futra', 'Zgubił się'], c: 1, fact: 'Edmund wszedł do szafy, bo chciał dalej wyśmiewać się z Łucji.' },
-    { q: 'Czym Biała Czarownica poczęstowała Edmunda?', a: ['Czekoladą', 'Zaczarowanym ptasim mleczkiem', 'Gorącym miodem', 'Jabłkiem'], c: 1, fact: 'Magiczny przysmak sprawił, że Edmund stał się posłuszny wiedźmie.' },
-    { q: 'Co obiecała Czarownica Edmundowi w zamian za przyprowadzenie rodzeństwa?', a: ['Górę złota', 'Że zostanie królem', 'Powrót do domu', 'Magiczny miecz'], c: 1, fact: 'Obietnica władzy i korony zaślepiła Edmunda.' },
-    { q: 'Dlaczego rodzeństwo wspólnie weszło do szafy?', a: ['Z ciekawości', 'Uciekali przed panią Macready', 'Gonił ich pies', 'Szukali skarbu'], c: 1, fact: 'Dzieci schowały się w szafie, by uniknąć spotkania z turystami zwiedzającymi dom.' },
-    { q: 'Co zastały dzieci w pieczarze Tumnusa?', a: ['Ucztę', 'Zniszczony dom i informację o aresztowaniu', 'Pustkę', 'Białą Czarownicę'], c: 1, fact: 'Tumnus został porwany przez Tajną Policję za zdradę stanu.' },
-    { q: 'Kto był przewodnikiem dzieci do obozu Aslana?', a: ['Olbrzym', 'Pan Bóbr', 'Lis', 'Wilk'], c: 1, fact: 'Pan Bóbr spotkał dzieci w lesie i zaprowadził je do swojej tamy.' },
-    { q: 'Kim był Aslan?', a: ['Wielkim niedźwiedziem', 'Potężnym Lwem i królem', 'Duchem lasu', 'Czarnoksiężnikiem'], c: 1, fact: 'Aslan to prawdziwy władca Narnii i syn Władcy-Zza-Morza.' },
-    { q: 'Jaki zakaz panował w Narnii pod rządami Czarownicy?', a: ['Zakaz śpiewania', 'Zakaz świąt Bożego Narodzenia', 'Zakaz biegania', 'Zakaz mówienia'], c: 1, fact: 'W Narnii trwała wieczna zima, ale nigdy nie było świąt.' },
-    { q: 'Gdzie udał się Edmund, gdy wymknął się z domu Bobrów?', a: ['Do Londynu', 'Do zamku Białej Czarownicy', 'Do obozu Aslana', 'Do Tumnusa'], c: 1, fact: 'Edmund liczył na obiecane ptasie mleczko i koronę.' },
-    { q: 'Co zobaczył Edmund na dziedzińcu zamku wiedźmy?', a: ['Kwiaty', 'Kamienne posągi zwierząt', 'Wojsko', 'Ogień'], c: 1, fact: 'Były to ofiary, które Czarownica zamieniła w kamień różdżką.' },
-    { q: 'Jak nazywał się szef Tajnej Policji?', a: ['Maugrim', 'Karzeł', 'Grzmotołup', 'Bóbr'], c: 0, fact: 'Maugrim był wielkim, okrutnym wilkiem.' },
-    { q: 'Kto niespodziewanie pojawił się, gdy zima zaczęła ustępować?', a: ['Profesor', 'Święty Mikołaj', 'Mama dzieci', 'Inny faun'], c: 1, fact: 'Pojawienie się Mikołaja było znakiem, że moc Czarownicy słabnie.' },
-    { q: 'Co otrzymała Łucja od Świętego Mikołaja?', a: ['Łuk', 'Sztylet i leczniczy kordiał', 'Miecz', 'Złoty pierścień'], c: 1, fact: 'Kordiał potrafił uleczyć każdą ranę.' },
-    { q: 'Jaki dar dostał Piotr od Mikołaja?', a: ['Róg', 'Miecz i tarczę', 'Złotą koronę', 'Mapę Narnii'], c: 1, fact: 'Dary te miały służyć do walki w obronie krainy.' },
-    { q: 'Dlaczego Zuzanna otrzymała róg?', a: ['Aby na nim grać', 'By wzywać pomocy w niebezpieczeństwie', 'To był instrument', 'Dla ozdoby'], c: 1, fact: 'Dźwięk rogu zawsze sprowadzał ratunek.' },
-    { q: 'Jak Piotr zdobył tytuł szlachecki?', a: ['Znalazł skarb', 'Zabił wilka Maugrima', 'Uratował Aslana', 'Wygrał wyścig'], c: 1, fact: 'Aslan pasował go na rycerza po uratowaniu Zuzanny przed wilkiem.' },
-    { q: 'Gdzie znajdował się obóz Aslana?', a: ['W zamku', 'Przy Kamiennym Stole', 'W jaskini', 'Na szczycie góry'], c: 1, fact: 'Kamienny Stół to miejsce o ogromnym znaczeniu magicznym.' },
-    { q: 'Jakie prawo miała Czarownica wobec zdrajców?', a: ['Mogła ich wypędzić', 'Miała prawo do ich krwi i życia', 'Musiała im wybaczyć', 'Zabierała im mienie'], c: 1, fact: 'Zgodnie z Wielkimi Czarami, każdy zdrajca należał do niej.' },
-    { q: 'Czym była ofiara Aslana?', a: ['Zabawą', 'Dobrowolną śmiercią za Edmunda', 'Przegraną bitwą', 'Ucieczką'], c: 1, fact: 'Aslan oddał życie, by uratować Edmunda przed śmiercią.' },
-    { q: 'Dlaczego Aslan zmartwychwstał?', a: ['Bo Czarownica go nie zabiła', 'Dzięki Głębszemu Czarowi', 'Miał magiczną zbroję', 'To był sen'], c: 1, fact: 'Gdy niewinna ofiara zginie za zdrajcę, śmierć cofa swój wyrok.' },
-    { q: 'Co stało się z Kamiennym Stołem po powrocie Aslana?', a: ['Zniknął', 'Pękł na pół', 'Zaczął świecić', 'Zmienił się w złoto'], c: 1, fact: 'Pęknięcie stołu oznaczało koniec starego prawa śmierci.' },
-    { q: 'Jak Aslan ożywił posągi w zamku wiedźmy?', a: ['Dotykiem łapy', 'Swoim oddechem', 'Różdżką', 'Krzykiem'], c: 1, fact: 'Oddech Lwa przywracał życie skamieniałym istotom.' },
-    { q: 'Co zrobił Edmund podczas ostatniej bitwy?', a: ['Uciekł', 'Zniszczył różdżkę Czarownicy', 'Schował się', 'Poddal się'], c: 1, fact: 'Tym czynem odebrał wiedźmie jej najgroźniejszą broń.' },
-    { q: 'Gdzie dzieci zostały koronowane na władców?', a: ['W lesie', 'W zamku Ker-Paravel', 'U Bobrów', 'W Londynie'], c: 1, fact: 'Ker-Paravel to dawna stolica Narnii nad brzegiem morza.' },
-    { q: 'Jaki przydomek otrzymał Edmund jako król?', a: ['Wspaniały', 'Sprawiedliwy', 'Łagodny', 'Mężny'], c: 1, fact: 'Edmund Sprawiedliwy to imię, na które ciężko zapracował swoją przemianą.' }
+    { q: 'Co Pan Tumnus wyznał Łucji podczas płaczu?', a: ['Że zgubił klucze', 'Że jest szpiegiem z przymusu', 'Że chce uciec z Narnii', 'Że jest głodny'], c: 1, fact: 'Tumnus był szpiegiem na usługach Czarownicy, ale sumienie nie pozwoliło mu wydać Łucji.' },
+    { q: 'Gdzie zamieszkało rodzeństwo po wyjeździe z Londynu?', a: ['W małym mieszkaniu', 'W zamku nad morzem', 'W ogromnym starym domu na wsi', 'W internacie'], c: 2, fact: 'Posiadłość Profesora była tak wielka i stara, że można było się w niej łatwo zgubić.' },
+    { q: 'Dlaczego Edmund wszedł do szafy za drugim razem?', a: ['Chciał zwiedzić Narnię', 'Chciał dokuczać Łucji', 'Szukał ciepłego futra', 'Zgubił się'], c: 1, fact: 'Edmund wszedł do szafy, bo chciał dalej wyśmiewać się z Łucji i jej "wymyślonego" świata.' },
+    { q: 'Czym Biała Czarownica poczęstowała Edmunda?', a: ['Czekoladą', 'Zaczarowanym ptasim mleczkiem', 'Gorącym miodem', 'Jabłkiem'], c: 1, fact: 'Magiczny przysmak sprawił, że Edmund stał się posłuszny wiedźmie i pragnął go coraz więcej.' },
+    { q: 'Co obiecała Czarownica Edmundowi w zamian za przyprowadzenie rodzeństwa?', a: ['Górę złota', 'Że zostanie królem i będzie jadł ptasie mleczko', 'Powrót do domu', 'Magiczny miecz'], c: 1, fact: 'Obietnica władzy i bycia następcą tronu zaślepiła Edmunda.' },
+    { q: 'Dlaczego rodzeństwo wspólnie weszło do szafy?', a: ['Z ciekawości', 'Uciekali przed panią Macready i grupą zwiedzających', 'Gonił ich pies', 'Szukali skarbu'], c: 1, fact: 'Dzieci schowały się w szafie, by uniknąć spotkania z surową gospodynią oprowadzającą turystów.' },
+    { q: 'Co zastały dzieci w pieczarze Tumnusa?', a: ['Ucztę', 'Zdemolowane mieszkanie i wiadomość o aresztowaniu', 'Pustkę', 'Białą Czarownicę'], c: 1, fact: 'Faun został porwany przez Tajną Policję za uratowanie Córki Ewy.' },
+    { q: 'Kto był przewodnikiem dzieci do obozu Aslana?', a: ['Olbrzym', 'Pan Bóbr', 'Lis', 'Wilk'], c: 1, fact: 'Pan Bóbr spotkał dzieci w lesie i sprawdził ich tożsamość, pokazując chusteczkę Łucji.' },
+    { q: 'Kim był Aslan?', a: ['Wielkim niedźwiedziem', 'Potężnym Lwem i prawdziwym królem', 'Duchem lasu', 'Czarnoksiężnikiem'], c: 1, fact: 'Aslan to syn Władcy-Zza-Morza i jedyny prawowity władca Narnii.' },
+    { q: 'Jaki urok panował w Narnii pod rządami Czarownicy?', a: ['Wieczna mgła', 'Wieczna zima bez Bożego Narodzenia', 'Zakaz biegania', 'Zakaz mówienia'], c: 1, fact: 'Czarownica sprawiła, że w Narnii zawsze panował mróz, ale nigdy nie było radosnych świąt.' },
+    { q: 'Gdzie udał się Edmund, gdy wymknął się z domu Bobrów?', a: ['Do Londynu', 'Do zamku Białej Czarownicy', 'Do obozu Aslana', 'Do Tumnusa'], c: 1, fact: 'Edmund liczył na obiecane smakołyki i zdradził rodzeństwo dla własnej korzyści.' },
+    { q: 'Co zobaczył Edmund na dziedzińcu zamku wiedźmy?', a: ['Kwiaty', 'Kamienne posągi stworzeń', 'Wojsko', 'Ogień'], c: 1, fact: 'Były to ofiary Czarownicy, które zamieniła w kamień swoją różdżką.' },
+    { q: 'Jak nazywał się szef Tajnej Policji?', a: ['Maugrim', 'Karzeł', 'Grzmotołup', 'Bóbr'], c: 0, fact: 'Maugrim był wielkim, okrutnym wilkiem służącym Czarownicy.' },
+    { q: 'Kto niespodziewanie pojawił się, gdy czary zaczęły słabnąć?', a: ['Profesor', 'Święty Mikołaj', 'Mama dzieci', 'Inny faun'], c: 1, fact: 'Pojawienie się Mikołaja było dowodem na to, że moc Czarownicy i jej zima dobiegają końca.' },
+    { q: 'Co otrzymała Łucja od Świętego Mikołaja?', a: ['Łuk', 'Sztylet i leczniczy kordiał', 'Miecz', 'Złoty pierścień'], c: 1, fact: 'Kordiał z soku ognistych kwiatów potrafił uleczyć każdą ranę i chorobę.' },
+    { q: 'Jaki dar dostał Piotr od Mikołaja?', a: ['Róg', 'Miecz i tarczę', 'Złotą koronę', 'Mapę Narnii'], c: 1, fact: 'Miecz Piotra miał srebrną rękojeść i złotego lwa, był narzędziem do walki o wolność.' },
+    { q: 'Dlaczego Zuzanna otrzymała magiczny róg?', a: ['Aby na nim grać', 'By wzywać pomocy w niebezpieczeństwie', 'To był instrument', 'Dla ozdoby'], c: 1, fact: 'Dźwięk rogu miał być słyszany w każdym miejscu Narnii i sprowadzać ratunek.' },
+    { q: 'Jak Piotr zdobył tytuł szlachecki?', a: ['Znalazł skarb', 'Zabił Maugrima broniącego Zuzanny', 'Uratował Aslana', 'Wygrał wyścig'], c: 1, fact: 'Aslan pasował go na rycerza jako "Piotra, Pogromcę Wilka".' },
+    { q: 'Gdzie znajdował się obóz Aslana, w którym spotkał się z dziećmi?', a: ['W zamku', 'Przy Kamiennym Stole', 'W jaskini', 'Na szczycie góry'], c: 1, fact: 'Kamienny Stół to starożytne miejsce, gdzie zebrała się armia Aslana.' },
+    { q: 'Jakie prawo miała Czarownica wobec każdego zdrajcy?', a: ['Mogła ich wypędzić', 'Miała prawo do ich krwi i życia', 'Musiała im wybaczyć', 'Zabierała im mienie'], c: 1, fact: 'Zgodnie z Wielkimi Czarami zapisanymi przez Władcę-Zza-Morza, zdrajcy należeli do wiedźmy.' },
+    { q: 'Na czym polegało poświęcenie Aslana?', a: ['Na oddaniu korony', 'Na dobrowolnej śmierci za Edmunda', 'Na oddaniu magii', 'Na ucieczce z Narnii'], c: 1, fact: 'Aslan zawarł układ z Czarownicą, by uratować Edmunda przed śmiercią.' },
+    { q: 'Dlaczego śmierć Aslana nie była ostateczna?', a: ['Bo Czarownica go nie zabiła', 'Dzięki Głębszemu Czarowi sprzed początków czasu', 'Miał magiczną zbroję', 'To był tylko sen'], c: 1, fact: 'Jeśli niewinna osoba zginie za zdrajcę, Kamienny Stół pęknie, a śmierć się cofnie.' },
+    { q: 'Co stało się z Kamiennym Stołem w chwili zmartwychwstania?', a: ['Zniknął', 'Pękł na dwoje', 'Zaczął świecić', 'Zmienił się w złoto'], c: 1, fact: 'Pęknięcie stołu symbolizowało triumf nowej magii nad dawnym prawem.' },
+    { q: 'Jak Aslan ożywił posągi w zamku Białej Czarownicy?', a: ['Dotykiem łapy', 'Swoim oddechem', 'Różdżką', 'Krzykiem'], c: 1, fact: 'Ciepły oddech Lwa przywracał życie i krew skamieniałym stworzeniom.' },
+    { q: 'Co przełomowego zrobił Edmund podczas bitwy?', a: ['Uciekł z pola walki', 'Zniszczył różdżkę Czarownicy', 'Schował się w krzakach', 'Poddal się'], c: 1, fact: 'Rozbicie różdżki pozbawiło Czarownicę możliwości zamieniania armii Aslana w kamień.' },
+    { q: 'Gdzie rodzeństwo zostało koronowane na władców Narnii?', a: ['W lesie', 'W zamku Cair Paravel', 'U Bobrów', 'W Londynie'], c: 1, fact: 'Cair Paravel to zamek o czterech tronach położony nad brzegiem wielkiego morza.' },
+    { q: 'Jaki przydomek otrzymał Edmund po latach sprawiedliwych rządów?', a: ['Wspaniały', 'Sprawiedliwy', 'Łagodny', 'Mężny'], c: 1, fact: 'Edmund stał się mądrym i surowym dla zła władcą, znanym jako król Edmund Sprawiedliwy.' }
 ];
 
         const screens = {
@@ -1321,13 +1320,14 @@
             // 🗑️ Czyszczenie rankingu na start nowej rundy (jak w Kahocie)
             try {
                 localStorage.removeItem(STORAGE_KEY);
-                localStorage.removeItem(BEST_SCORE_KEY);
+                localStorage.removeItem(`narniaQuizBestScore_${playerName}`);
             } catch {}
             
             quizQuestions = shuffle(questionBank);
             elements.questionTotal.textContent = String(quizQuestions.length);
             showScreen('quiz');
             renderQuestion();
+            renderBestScore(playerName);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1396,8 +1396,8 @@
             if (selectedIndex === currentQuestion.c) {
                 // ⚡ Obliczanie bonusowych punktów za szybkość
                 correctAnswers += 1;
-                const timeBonus = Math.round((timeLeft / QUESTION_TIME) * 1000); // Max 1000 pkt za 0 sekund
-                const bonusText = timeLeft >= 18 ? '🔥 +1000 MEGA BONUS!' : timeLeft >= 15 ? '⚡ +' + timeBonus + ' bonus!' : '+' + timeBonus + ' pkt';
+                const timeBonus = Math.round((timeLeft / QUESTION_TIME) * 500); // Max 500 pkt za 0 sekund
+                const bonusText = timeLeft >= 18 ? '🔥 +500 MEGA BONUS!' : timeLeft >= 15 ? '⚡ +' + timeBonus + ' bonus!' : '+' + timeBonus + ' pkt';
                 
                 timeBonusScore += timeBonus;
                 elements.feedback.innerHTML = `✅ Świetnie! ${bonusText}<br><small>${currentQuestion.fact}</small>`;
@@ -1492,30 +1492,32 @@
             }
         }
 
-        function readBestScore() {
+        function readBestScore(playerName) {
             try {
-                const raw = localStorage.getItem(BEST_SCORE_KEY);
+                const key = `narniaQuizBestScore_${playerName}`;
+                const raw = localStorage.getItem(key);
                 return raw ? normalizeEntry(JSON.parse(raw)) : null;
             } catch {
                 return null;
             }
         }
 
-        function updateBestScore(entry) {
-            const currentBest = readBestScore();
+        function updateBestScore(entry, playerName) {
+            const currentBest = readBestScore(playerName);
             if (!currentBest || entry.totalScore > currentBest.totalScore || (entry.totalScore === currentBest.totalScore && entry.percentage > currentBest.percentage)) {
                 try {
-                    localStorage.setItem(BEST_SCORE_KEY, JSON.stringify(entry));
+                    const key = `narniaQuizBestScore_${playerName}`;
+                    localStorage.setItem(key, JSON.stringify(entry));
                 } catch {
                     // pomijamy błąd zapisu
                 }
             }
-            renderBestScore();
+            renderBestScore(playerName);
         }
 
-        function renderBestScore() {
-            const best = readBestScore();
-            elements.bestScore.textContent = best ? `${best.correctAnswers}✓+${best.timeBonusScore}⚡` : 'Brak';
+        function renderBestScore(playerName = '') {
+            const best = playerName ? readBestScore(playerName) : null;
+            elements.bestScore.textContent = best ? `${best.correctAnswers}✓+${best.timeBonusScore}⚡` : '0✓+0⚡';
         }
 
         function escapeHtml(value) {
@@ -1608,7 +1610,7 @@
             const entry = normalizeEntry({ name: playerName, correctAnswers, timeBonusScore, totalScore, total, rank, percentage });
 
             saveLocalLeaderboard(entry);
-            updateBestScore(entry);
+            updateBestScore(entry, playerName);
             syncScore(entry);
 
             elements.resultTitle.textContent = `Brawo, ${playerName}!`;
