@@ -513,36 +513,212 @@
         @media (max-width: 480px) {
             body {
                 font-size: 15px;
+                padding-bottom: max(16px, env(safe-area-inset-bottom));
+            }
+
+            .container {
+                margin: 8px auto 20px;
             }
 
             .panel {
-                padding: 14px;
+                padding: 16px;
+                border-radius: 20px;
             }
 
             h1 {
                 font-size: 1.8rem;
+                margin-bottom: 10px;
             }
 
             h2 {
                 font-size: 1.25rem;
+                margin-bottom: 10px;
             }
 
             .lead {
                 font-size: 0.96rem;
                 line-height: 1.55;
+                margin-bottom: 16px;
             }
 
             .story-scene {
-                min-height: 200px;
+                min-height: 260px;
+                border-radius: 20px;
+            }
+
+            .moon {
+                width: 60px;
+                height: 60px;
+                top: 14px;
+                right: 18px;
+            }
+
+            .lantern-glow {
+                width: 110px;
+                height: 110px;
+            }
+
+            .lantern-post {
+                height: 140px;
+            }
+
+            .lantern-head {
+                height: 48px;
+            }
+
+            .tree {
+                border-left-width: 32px;
+                border-right-width: 32px;
+                border-bottom-width: 78px;
+            }
+
+            .tree::before {
+                border-left-width: 26px;
+                border-right-width: 26px;
+                border-bottom-width: 62px;
+            }
+
+            .tree::after {
+                width: 8px;
+                height: 36px;
+            }
+
+            .tree-left {
+                transform: scale(1.1);
+            }
+
+            .tree-mid {
+                transform: scale(1.2);
+            }
+
+            .snow-ground {
+                height: 72px;
+            }
+
+            .scene-caption {
+                left: 12px;
+                bottom: 10px;
+                padding: 5px 8px;
+                font-size: 0.78rem;
+            }
+
+            .input-group {
+                margin: 16px 0 12px;
+            }
+
+            input {
+                min-height: 48px;
+                padding: 12px 14px;
+                font-size: 1rem;
+            }
+
+            .button-row {
+                gap: 10px;
+                margin-top: 12px;
+            }
+
+            button {
+                min-height: 48px;
+                padding: 12px 16px;
+                font-size: 0.95rem;
+            }
+
+            .primary-btn {
+                flex: 1 1 200px;
+            }
+
+            .secondary-btn {
+                flex: 1 1 160px;
+            }
+
+            .quick-info {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 10px;
+                margin-top: 16px;
+            }
+
+            .info-pill {
+                padding: 12px;
+            }
+
+            .info-pill strong {
+                font-size: 1.1rem;
+            }
+
+            .info-pill span {
+                font-size: 0.9rem;
+            }
+
+            .note {
+                gap: 10px;
+                margin-top: 16px;
+            }
+
+            .quiz-meta {
+                gap: 14px;
+                margin-bottom: 14px;
+            }
+
+            .progress-bar {
+                height: 10px;
+                margin-bottom: 18px;
+            }
+
+            .options-container {
+                gap: 10px;
+                grid-template-columns: 1fr;
+            }
+
+            .answer-btn {
+                padding: 12px;
+                font-size: 0.95rem;
             }
 
             .answer-letter {
                 width: 30px;
                 height: 30px;
+                font-size: 0.9rem;
             }
 
-            .scene-caption {
-                font-size: 0.78rem;
+            .feedback {
+                min-height: 48px;
+                padding: 10px 12px;
+                font-size: 0.95rem;
+            }
+
+            .result-box {
+                padding: 16px;
+                border-radius: 16px;
+            }
+
+            .result-score {
+                font-size: 2rem;
+            }
+
+            .table-wrap {
+                margin-top: 10px;
+            }
+
+            th,
+            td {
+                padding: 8px 4px;
+                font-size: 0.88rem;
+            }
+
+            .empty-state {
+                padding: 16px;
+            }
+
+            #snow {
+                opacity: 0.7;
+            }
+
+            body::before {
+                opacity: 0.4;
+            }
+
+            body::after {
+                opacity: 0.8;
             }
         }
 
@@ -826,8 +1002,8 @@
         <section id="screen-start" class="panel">
             <div class="hero-layout">
                 <div class="hero-copy">
-                    <p class="hero-kicker">🌲 Las Narnii i stara latarnia</p>
-                    <h1>Opowieści z Narnii</h1>
+                    <p class="hero-kicker">🌲 Narnia i stara szafa</p>
+                    <h1>Quiz Opowieści z Narnii</h1>
 
                     <div class="input-group">
                         <label for="player-name">Imię gracza</label>
@@ -1654,11 +1830,13 @@
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            createSnow();
         }
 
         function createSnow() {
             resizeCanvas();
-            flakes = Array.from({ length: 110 }, () => ({
+            const flakeCount = window.innerWidth <= 768 ? 50 : 110;
+            flakes = Array.from({ length: flakeCount }, () => ({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
                 radius: Math.random() * 3 + 1,
